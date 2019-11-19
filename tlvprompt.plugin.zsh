@@ -1,1 +1,2 @@
-./tlvprompt.zsh
+autoload -Uz tlvprompt.zsh
+tlvprompt.zsh
