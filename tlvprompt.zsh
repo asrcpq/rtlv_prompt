@@ -30,6 +30,9 @@ function set_static(){
 		TTY_COLOR='%F{white}'
 	fi	
 	PS1_STATIC+=$TTY_COLOR"%l%f&"
+	if [ -d /proc/$PPID ]; then
+		SH_PARENT=$(cat /proc/$PPID/status | head -1 | awk '{print $2}' | grep -o "^[a-zA-Z0-9\-_]*")
+	fi
 	case $SH_PARENT in
 		"sakura")
 			SH_COLOR='%F{magenta}' # vte based
@@ -108,9 +111,6 @@ function zle-line-init zle-keymap-select {
 tlvprompt_preexec() {}
 
 tlvprompt_precmd() {
-	if [ -d /proc/$PPID ]; then
-		SH_PARENT=$(cat /proc/$PPID/status | head -1 | awk '{print $2}' | grep -o "^[a-zA-Z0-9\-_]*")
-	fi
 	set_prompt
 	echo -ne '\e[5 q'
 }
