@@ -1,8 +1,8 @@
 function set_permcolor(){
-	if [[ `ls -dl $PWD | awk '{ print $3 }'` = $USER ]] {
+	if [ "$(ls -dl $PWD | awk '{print $3}')" = $USER ] {
 		RCHK=2
 		WCHK=3
-	} elif [[ $(groups) =~ ".*\ $(ls -dl $PWD | awk '{ print $4 }')\ .*" ]] {
+	} elif ( groups | grep -qw "$(ls -d $PWD | awk '{print $4}')" ) {
 		RCHK=5
 		WCHK=6
 	} else {
