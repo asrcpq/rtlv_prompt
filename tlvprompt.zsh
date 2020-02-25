@@ -1,22 +1,22 @@
 function set_permcolor(){
-	if [ "$(ls -dl $PWD | awk '{print $3}')" = $USER ] {
+	if [ "$(ls -dl "$PWD" | awk '{print $3}')" = $USER ]; then
 		RCHK=2
 		WCHK=3
-	} elif ( groups | grep -qw "$(ls -d $PWD | awk '{print $4}')" ) {
+	elif ( groups | grep -qw "$(ls -d "$PWD" | awk '{print $4}')" ); then
 		RCHK=5
 		WCHK=6
-	} else {
+	else
 		RCHK=8
 		WCHK=9
-	} 
+	fi
 	RWINFO=`ls -dl $PWD | cut -f1 -d ' ' | cut -c$RCHK,$WCHK`
-	if [[ $RWINFO = 'rw' ]] {
+	if [ "$RWINFO" = 'rw' ]; then
 		PERMCOLOR='%F{cyan}'
-	} elif [[ $RWINFO = 'r-' ]] {
+	elif [ "$RWINFO" = 'r-' ]; then
 		PERMCOLOR='%F{red}'
-	} else {
+	else
 		PERMCOLOR='%F{white}'
-	}
+	fi
 }
 
 function set_static(){
