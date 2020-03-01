@@ -1,18 +1,7 @@
 function set_permcolor(){
-	if [ "$(ls -dl "$PWD" | awk '{print $3}')" = $USER ]; then
-		RCHK=2
-		WCHK=3
-	elif ( groups | grep -qw -- "$(ls -d "$PWD" | awk '{print $4}')" ); then
-		RCHK=5
-		WCHK=6
-	else
-		RCHK=8
-		WCHK=9
-	fi
-	RWINFO=`ls -dl $PWD | cut -f1 -d ' ' | cut -c$RCHK,$WCHK`
-	if [ "$RWINFO" = 'rw' ]; then
+	if [ -w "$(readlink -f "$PWD")" ]; then
 		PERMCOLOR='%F{cyan}'
-	elif [ "$RWINFO" = 'r-' ]; then
+	elif [ -x "$(readlink -f "$PWD")" ]; then
 		PERMCOLOR='%F{red}'
 	else
 		PERMCOLOR='%F{white}'
