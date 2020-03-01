@@ -85,13 +85,13 @@ function zle-line-init zle-keymap-select {
 	set_prompt
 	zle reset-prompt
 	if [[ $TERM != 'linux' ]]; then
-		if [[ ${KEYMAP} == vicmd ]] ||
-				[[ $1 = 'block' ]]; then
+		if [ "$KEYMAP" = "vicmd" ] ||
+				[ "$1" = "block" ]; then
 			echo -ne '\e[1 q'
-		elif [[ ${KEYMAP} == main ]] ||
-				[[ ${KEYMAP} == viins ]] ||
-				[[ ${KEYMAP} = '' ]] ||
-				[[ $1 = 'beam' ]]; then
+		elif [ "$KEYMAP" = "main" ] ||
+				[ "$KEYMAP" = "viins" ] ||
+				[ "$KEYMAP" = "" ] ||
+				[ $1 = 'beam' ]; then
 			echo -ne '\e[5 q'
 		fi
 	fi
