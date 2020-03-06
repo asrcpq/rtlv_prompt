@@ -9,52 +9,52 @@ function set_permcolor(){
 }
 
 function set_static(){
-	COLS=$(tput cols)
+	local COLS=$(tput cols)
 	PS1_STATIC="%4F%n%f@%3F%m%f#"
 	if [ -n "$(echo $TTY | grep "^/dev/pts")" ]; then
-		TTY_COLOR='%F{blue}'
+		local TTY_COLOR='%F{blue}'
 	elif [ -n "$(echo $TTY | grep "^/dev/tty")" ]; then
-		TTY_COLOR='%F{green}'
+		local TTY_COLOR='%F{green}'
 	else
-		TTY_COLOR='%F{white}'
+		local TTY_COLOR='%F{white}'
 	fi	
 	PS1_STATIC+=$TTY_COLOR"%l%f&"
 	if [ -d /proc/$PPID ]; then
-		SH_PARENT=$(cat /proc/$PPID/status | head -1 | awk '{print $2}' | grep -o "^[a-zA-Z0-9\-_]*")
+		local SH_PARENT=$(cat /proc/$PPID/status | head -1 | awk '{print $2}' | grep -o "^[a-zA-Z0-9\-_]*")
 	fi
 	case $SH_PARENT in
 		"sakura")
-			SH_COLOR='%F{magenta}' # vte based
+			local SH_COLOR='%F{magenta}' # vte based
 			;;
 		"termite")
-			SH_COLOR='%F{magenta}'
+			local SH_COLOR='%F{magenta}'
 			;;
 		"sshd")
-			SH_COLOR="%F{green}" # remote
+			local SH_COLOR="%F{green}" # remote
 			;;
 		"mosh-server")
-			SH_COLOR="%F{green}"
+			local SH_COLOR="%F{green}"
 			;;
 		"kitty")
-			SH_COLOR="%F{yellow}" # GPU accelarated
+			local SH_COLOR="%F{yellow}" # GPU accelarated
 			;;
 		"alacritty")
-			SH_COLOR_"%F{yellow}"
+			local SH_COLOR_"%F{yellow}"
 			;;
 		"screen")
-			SH_COLOR="%F{blue}" # nested terminal
+			local SH_COLOR="%F{blue}" # nested terminal
 			;;
 		"tmux") 
-			SH_COLOR="%F{blue}"
+			local SH_COLOR="%F{blue}"
 			;;
 		"xterm")
-			SH_COLOR="%F{cyan}" # xterm, rxvt, st
+			local SH_COLOR="%F{cyan}" # xterm, rxvt, st
 			;;
 		"st")
-			SH_COLOR="%F{cyan}"
+			local SH_COLOR="%F{cyan}"
 			;;
 		*)
-			SH_COLOR="%F{white}"
+			local SH_COLOR="%F{white}"
 			;;
 	esac
 	PS1_STATIC+=$SH_COLOR"$SH_PARENT%f"
@@ -75,12 +75,11 @@ function set_ps(){
 function set_prompt(){
 	set_permcolor
 	set_ps
-#	set_rps
 }
 
 function zle-line-init zle-keymap-select {
-	PS1_VIINS_SYMBOL="%12FI%f"
-	PS1_VICMD_SYMBOL="%3FN%f"
+	local PS1_VIINS_SYMBOL="%12FI%f"
+	local PS1_VICMD_SYMBOL="%3FN%f"
 	PS1_VISTATUS="${${KEYMAP/vicmd/$PS1_VICMD_SYMBOL}/(main|viins)/$PS1_VIINS_SYMBOL}"
 	set_prompt
 	zle reset-prompt
@@ -112,7 +111,7 @@ tlvprompt_setup() {
 	zle -N zle-line-init
 	zle -N zle-keymap-select
 
-	PS1_VISTATUS=""
+	local PS1_VISTATUS=""
 }
 
 tlvprompt_setup
