@@ -39,7 +39,7 @@ function set_static(){
 			local SH_COLOR="%F{yellow}" # GPU accelarated
 			;;
 		"alacritty")
-			local SH_COLOR_"%F{yellow}"
+			local SH_COLOR="%F{yellow}"
 			;;
 		"screen")
 			local SH_COLOR="%F{blue}" # nested terminal
