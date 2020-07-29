@@ -113,5 +113,3 @@ tlvprompt_setup() {
 
 	local PS1_VISTATUS=""
 }
-
-tlvprompt_setup
