@@ -86,8 +86,6 @@ function zle-line-init zle-keymap-select {
 	fi
 }
 
-tlvprompt_preexec() {}
-
 tlvprompt_precmd() {
 	set_prompt
 	echo -ne '\e[5 q'
@@ -95,7 +93,6 @@ tlvprompt_precmd() {
 
 tlvprompt_setup() {
 	add-zsh-hook precmd tlvprompt_precmd
-	add-zsh-hook preexec tlvprompt_preexec
 	set_static
 
 	zle -N zle-line-init
