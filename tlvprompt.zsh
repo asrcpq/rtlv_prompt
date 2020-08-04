@@ -1,13 +1,3 @@
-function set_permcolor(){
-	if [ -w $PWD ]; then
-		PERMCOLOR='%F{cyan}'
-	elif [ -x $PWD ]; then
-		PERMCOLOR='%F{red}'
-	else
-		PERMCOLOR='%F{white}'
-	fi
-}
-
 function set_static(){
 	PS1_STATIC="%4F%n%f@%3F%m%f#"
 	if [[ $TTY == /dev/pts/* ]]; then
@@ -59,21 +49,22 @@ function set_static(){
 	PS1_STATIC+=$SH_COLOR"$SH_PARENT%f"
 }
 
-function set_ps(){
+function set_prompt(){
 	PS1=$'%(?..%11F%1F%?<%f)'
 	PS1+=$PS1_STATIC
 	PS1+=":%6F%d%f"$'\n%k'
 	PS1+=$PS1_VISTATUS
-	PS1+=$PERMCOLOR
+	if [ -w $PWD ]; then
+		PS1+='%F{cyan}'
+	elif [ -x $PWD ]; then
+		PS1+='%F{red}'
+	else
+		PS1+='%F{white}'
+	fi
 	for ((i=0;i<$SHLVL;i++)) {
 		PS1+='>'
 	}
 	PS1+="%f"
-}
-
-function set_prompt(){
-	set_permcolor
-	set_ps
 }
 
 function zle-line-init zle-keymap-select {
