@@ -1,7 +1,7 @@
 function set_permcolor(){
-	if [ -w "$(readlink -f "$PWD")" ]; then
+	if [ -w $PWD ]; then
 		PERMCOLOR='%F{cyan}'
-	elif [ -x "$(readlink -f "$PWD")" ]; then
+	elif [ -x $PWD ]; then
 		PERMCOLOR='%F{red}'
 	else
 		PERMCOLOR='%F{white}'
@@ -9,25 +9,24 @@ function set_permcolor(){
 }
 
 function set_static(){
-	local COLS=$(tput cols)
 	PS1_STATIC="%4F%n%f@%3F%m%f#"
-	if [ -n "$(echo $TTY | grep "^/dev/pts")" ]; then
+	if [[ $TTY == /dev/pts/* ]]; then
 		local TTY_COLOR='%F{blue}'
-	elif [ -n "$(echo $TTY | grep "^/dev/tty")" ]; then
+	elif [[ $TTY == /dev/tty/* ]]; then
 		local TTY_COLOR='%F{green}'
 	else
 		local TTY_COLOR='%F{white}'
-	fi	
+	fi
 	PS1_STATIC+=$TTY_COLOR"%l%f&"
 	if [ -d /proc/$PPID ]; then
-		local SH_PARENT=$(cat /proc/$PPID/status | head -1 | awk '{print $2}' | grep -o "^[a-zA-Z0-9\-_]*")
+		local SH_PARENT="$(ps -o comm= $PPID)"
 	fi
 	case $SH_PARENT in
-		"sakura")
-			local SH_COLOR='%F{magenta}' # vte based
+		"xterm")
+			local SH_COLOR="%F{cyan}" # xterm, rxvt, st
 			;;
-		"termite")
-			local SH_COLOR='%F{magenta}'
+		"st")
+			local SH_COLOR="%F{cyan}"
 			;;
 		"sshd")
 			local SH_COLOR="%F{green}" # remote
@@ -35,23 +34,23 @@ function set_static(){
 		"mosh-server")
 			local SH_COLOR="%F{green}"
 			;;
-		"kitty")
-			local SH_COLOR="%F{yellow}" # GPU accelarated
-			;;
-		"alacritty")
-			local SH_COLOR="%F{yellow}"
-			;;
 		"screen")
 			local SH_COLOR="%F{blue}" # nested terminal
 			;;
 		"tmux") 
 			local SH_COLOR="%F{blue}"
 			;;
-		"xterm")
-			local SH_COLOR="%F{cyan}" # xterm, rxvt, st
+		"sakura")
+			local SH_COLOR='%F{magenta}' # vte based
 			;;
-		"st")
-			local SH_COLOR="%F{cyan}"
+		"termite")
+			local SH_COLOR='%F{magenta}'
+			;;
+		"kitty")
+			local SH_COLOR="%F{yellow}" # GPU accelarated
+			;;
+		"alacritty")
+			local SH_COLOR="%F{yellow}"
 			;;
 		*)
 			local SH_COLOR="%F{white}"
