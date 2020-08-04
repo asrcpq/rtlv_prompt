@@ -12,39 +12,17 @@ function set_static(){
 		local SH_PARENT="$(ps -o comm= $PPID)"
 	fi
 	case $SH_PARENT in
-		"xterm")
-			local SH_COLOR="%F{cyan}" # xterm, rxvt, st
-			;;
-		"st")
-			local SH_COLOR="%F{cyan}"
-			;;
-		"sshd")
-			local SH_COLOR="%F{green}" # remote
-			;;
-		"mosh-server")
-			local SH_COLOR="%F{green}"
-			;;
-		"screen")
-			local SH_COLOR="%F{blue}" # nested terminal
-			;;
-		"tmux") 
-			local SH_COLOR="%F{blue}"
-			;;
-		"sakura")
-			local SH_COLOR='%F{magenta}' # vte based
-			;;
-		"termite")
-			local SH_COLOR='%F{magenta}'
-			;;
-		"kitty")
-			local SH_COLOR="%F{yellow}" # GPU accelarated
-			;;
-		"alacritty")
-			local SH_COLOR="%F{yellow}"
-			;;
-		*)
-			local SH_COLOR="%F{white}"
-			;;
+		"xterm") local SH_COLOR="%F{cyan}";; # simple terminals
+		"st") local SH_COLOR="%F{cyan}";;
+		"sshd") local SH_COLOR="%F{green}";; # remote
+		"mosh-server") local SH_COLOR="%F{green}";;
+		"screen") local SH_COLOR="%F{blue}";; # nested
+		"tmux") local SH_COLOR="%F{blue}";;
+		"sakura") local SH_COLOR='%F{magenta}';; # vte based
+		"termite") local SH_COLOR='%F{magenta}';;
+		"kitty") local SH_COLOR="%F{yellow}";; # GPU accelarated
+		"alacritty") local SH_COLOR="%F{yellow}";;
+		*) local SH_COLOR="%F{white}";; # others
 	esac
 	PS1_STATIC+=$SH_COLOR"$SH_PARENT%f"
 }
