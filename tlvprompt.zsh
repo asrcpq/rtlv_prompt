@@ -70,6 +70,7 @@ tlvprompt_precmd() {
 }
 
 tlvprompt_setup() {
+	autoload -U add-zsh-hook
 	add-zsh-hook precmd tlvprompt_precmd
 	set_static
 
