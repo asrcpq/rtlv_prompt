@@ -28,7 +28,7 @@ function set_static(){
 }
 
 function set_prompt(){
-	PS1=$'%(?..%11F%1F%?<%f)'
+	PS1=$'%(?..%1F%?<%f)'
 	PS1+=$PS1_STATIC
 	PS1+=":%6F%d%f"$'\n%k'
 	PS1+=$PS1_VISTATUS
@@ -46,19 +46,17 @@ function set_prompt(){
 }
 
 function zle-line-init zle-keymap-select {
-	local PS1_VIINS_SYMBOL="%12FI%f"
-	local PS1_VICMD_SYMBOL="%3FN%f"
-	PS1_VISTATUS="${${KEYMAP/vicmd/$PS1_VICMD_SYMBOL}/(main|viins)/$PS1_VIINS_SYMBOL}"
+#	local PS1_VIINS_SYMBOL="I"
+#	local PS1_VICMD_SYMBOL="%3FN%f"
+#	PS1_VISTATUS="${${KEYMAP/vicmd/$PS1_VICMD_SYMBOL}/(main|viins)/$PS1_VIINS_SYMBOL}"
 	set_prompt
 	zle reset-prompt
 	if [[ $TERM != 'linux' ]]; then
-		if [ "$KEYMAP" = "vicmd" ] ||
-				[ "$1" = "block" ]; then
+		if [ "$KEYMAP" = "vicmd" ]; then
 			echo -ne '\e[1 q'
 		elif [ "$KEYMAP" = "main" ] ||
 				[ "$KEYMAP" = "viins" ] ||
-				[ "$KEYMAP" = "" ] ||
-				[ $1 = 'beam' ]; then
+				[ "$KEYMAP" = "" ]; then
 			echo -ne '\e[5 q'
 		fi
 	fi
