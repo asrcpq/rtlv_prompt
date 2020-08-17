@@ -1,5 +1,5 @@
 function set_static(){
-	PS1_STATIC="%4F%n%f@%3F%m%f#"
+	PS1_STATIC="%F{blue}%n%f@%F{cyan}%m%f#"
 	if [[ $TTY == /dev/pts/* ]]; then
 		local TTY_COLOR='%F{blue}'
 	elif [[ $TTY == /dev/tty/* ]]; then
@@ -46,9 +46,6 @@ function set_prompt(){
 }
 
 function zle-line-init zle-keymap-select {
-#	local PS1_VIINS_SYMBOL="I"
-#	local PS1_VICMD_SYMBOL="%3FN%f"
-#	PS1_VISTATUS="${${KEYMAP/vicmd/$PS1_VICMD_SYMBOL}/(main|viins)/$PS1_VIINS_SYMBOL}"
 	set_prompt
 	zle reset-prompt
 	if [[ $TERM != 'linux' ]]; then
