@@ -47,24 +47,38 @@ function zle-line-init zle-keymap-select {
 }
 
 tlvprompt_precmd() {
+	stty intr undef
 	set_prompt
 }
 
 tlvprompt_preexec() {
+	stty intr \
+	set_prompt
+}
+
+tlvprompt_accept() {
 	RPS1=""
 	zle reset-prompt
 	zle accept-line
 }
 
+tlvprompt_intr() {
+	zle kill-buffer
+}
+
 tlvprompt_setup() {
 	autoload -U add-zsh-hook
 	add-zsh-hook precmd tlvprompt_precmd
+	add-zsh-hook preexec tlvprompt_preexec
 	set_static
 	# call precmd or RPS wont appear in first prompt
 	tlvprompt_precmd
 
+	zle -N tlvprompt_accept
+	zle -N tlvprompt_intr
 	zle -N tlvprompt_preexec
-	bindkey "" tlvprompt_preexec
+	bindkey "" tlvprompt_accept
+	bindkey "" tlvprompt_intr
 	zle -N zle-line-init
 	zle -N zle-keymap-select
 
