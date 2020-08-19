@@ -6,9 +6,6 @@ function set_static(){
 	if [ -n "$SSH_CONNECTION" ]; then
 		PS1_STATIC+="S"
 	fi
-	if [[ "$(ps -p $PPID -o cmd=)" =~ "SCREEN|tmux" ]]; then
-		PS1_STATIC+="N"
-	fi
 }
 
 function set_prompt(){
