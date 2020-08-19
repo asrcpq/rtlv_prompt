@@ -51,9 +51,8 @@ tlvprompt_precmd() {
 }
 
 tlvprompt_preexec() {
-	RPS=""
+	RPS1=""
 	zle reset-prompt
-	PROMPT=">2"
 	zle accept-line
 }
 
