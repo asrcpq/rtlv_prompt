@@ -1,37 +1,26 @@
 function set_static(){
-	PS1_STATIC="%F{blue}%n%f@%F{cyan}%m%f#"
-	if [[ $TTY == /dev/pts/* ]]; then
-		local TTY_COLOR='%F{blue}'
-	elif [[ $TTY == /dev/tty/* ]]; then
-		local TTY_COLOR='%F{green}'
-	else
-		local TTY_COLOR='%F{white}'
+	PS1_STATIC=""
+	if [ "$EUID" = "0" ]; then
+		PS1_STATIC+="R"
 	fi
-	PS1_STATIC+=$TTY_COLOR"%l%f&"
-	if [ -d /proc/$PPID ]; then
-		local SH_PARENT="$(ps -o comm= $PPID)"
+	if [ -n "$SSH_CONNECTION" ]; then
+		PS1_STATIC+="S"
 	fi
-	case $SH_PARENT in
-		"xterm") local SH_COLOR="%F{cyan}";; # simple terminals
-		"st") local SH_COLOR="%F{cyan}";;
-		"sshd") local SH_COLOR="%F{green}";; # remote
-		"mosh-server") local SH_COLOR="%F{green}";;
-		"screen") local SH_COLOR="%F{blue}";; # nested
-		"tmux") local SH_COLOR="%F{blue}";;
-		"sakura") local SH_COLOR='%F{magenta}';; # vte based
-		"termite") local SH_COLOR='%F{magenta}';;
-		"kitty") local SH_COLOR="%F{yellow}";; # GPU accelarated
-		"alacritty") local SH_COLOR="%F{yellow}";;
-		*) local SH_COLOR="%F{white}";; # others
-	esac
-	PS1_STATIC+=$SH_COLOR"$SH_PARENT%f"
+	if [[ "$(ps -p $PPID -o cmd=)" =~ "SCREEN|tmux" ]]; then
+		PS1_STATIC+="N"
+	fi
 }
 
 function set_prompt(){
-	PS1=$'%(?..%1F%?<%f)'
-	PS1+=$PS1_STATIC
-	PS1+=":%6F%d%f"$'\n%k'
-	PS1+=$PS1_VISTATUS
+	PS1=$'%(?..%F{red}%?%f)'
+	if [ -n "$PS1_STATIC" ] || \
+		[ $(( $#PS1_STATIC + $#PWD )) -gt $(( $COLUMNS - 16 )) ]; then
+		if [ -n "$PS1_STATIC" ]; then
+			PS1+="($PS1_STATIC)"
+		fi
+		PS1+="%F{cyan}%d%f%k"
+	fi
+	RPS1="%F{cyan}%d%f"
 	if [ -w $PWD ]; then
 		PS1+='%F{cyan}'
 	elif [ -x $PWD ]; then
@@ -61,14 +50,38 @@ function zle-line-init zle-keymap-select {
 
 tlvprompt_precmd() {
 	set_prompt
-	echo -ne '\e[5 q'
+}
+
+tlvprompt_ctrl_m() {
+	zle kill-line
+	RPS1=""
+	zle reset-prompt
+	zle accept-line
+}
+
+tlvprompt_ctrl_x() {
+	RPS1=""
+	zle reset-prompt
+	zle accept-line
+}
+
+tlvprompt_intr() {
+	zle kill-buffer
 }
 
 tlvprompt_setup() {
 	autoload -U add-zsh-hook
 	add-zsh-hook precmd tlvprompt_precmd
 	set_static
+	# call precmd or RPS wont appear in first prompt
+	tlvprompt_precmd
 
+	zle -N tlvprompt_ctrl_m
+	zle -N tlvprompt_ctrl_x
+	zle -N tlvprompt_intr
+	zle -N tlvprompt_preexec
+	bindkey "" tlvprompt_ctrl_m
+	bindkey "" tlvprompt_ctrl_x
 	zle -N zle-line-init
 	zle -N zle-keymap-select
 

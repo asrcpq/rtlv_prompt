@@ -1,5 +1,16 @@
 source ${0:A:h}/tlvprompt.zsh
+tlvprompt_plugin_dir=${0:A:h}
 tlvprompt_setup
-unfunction tlvprompt_setup
-unfunction set_static
-unfunction tlvprompt_precmd
+
+tlvtoggle() {
+	tlvprompt_legacy="$(( 1 - tlvprompt_legacy ))"
+	if [ "$tlvprompt_legacy" = 1 ]; then
+		source ${tlvprompt_plugin_dir}/tlvprompt_legacy.zsh
+		tlvprompt_setup
+	else
+		source ${tlvprompt_plugin_dir}/tlvprompt.zsh
+		tlvprompt_setup
+	fi
+}
+
+tlvprompt_legacy=0
