@@ -47,13 +47,12 @@ function zle-line-init zle-keymap-select {
 }
 
 tlvprompt_precmd() {
-	stty intr undef
 	set_prompt
+	stty intr undef
 }
 
 tlvprompt_preexec() {
 	stty intr \
-	set_prompt
 }
 
 tlvprompt_accept() {
