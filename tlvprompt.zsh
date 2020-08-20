@@ -15,7 +15,6 @@ set_prompt() {
 		if [ -n "$PS1_STATIC" ]; then
 			PS1+="($PS1_STATIC)"
 		fi
-		PS1+="%F{cyan}%d%f%k"
 	fi
 	RPS1="%F{cyan}%d%f"
 	if [ -w $PWD ]; then
