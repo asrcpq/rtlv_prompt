@@ -48,17 +48,9 @@ tlvprompt_precmd() {
 	set_prompt
 }
 
-tlvprompt_ctrl_m() {
-	zle kill-line
+tlvprompt_clear() {
 	RPS1=""
 	zle reset-prompt
-	zle accept-line
-}
-
-tlvprompt_ctrl_x() {
-	RPS1=""
-	zle reset-prompt
-	zle accept-line
 }
 
 tlvprompt_intr() {
@@ -75,12 +67,8 @@ tlvprompt_setup() {
 	# call precmd or RPS wont appear in first prompt
 	set_prompt
 
-	zle -N tlvprompt_ctrl_m
-	zle -N tlvprompt_ctrl_x
 	zle -N tlvprompt_intr
 	zle -N tlvprompt_preexec
-	bindkey "" tlvprompt_ctrl_m
-	bindkey "" tlvprompt_ctrl_x
 	zle -N zle-line-init
 	zle -N zle-keymap-select
 
