@@ -13,7 +13,7 @@ set_prompt() {
 	if [ -n "$PS1_STATIC" ] || \
 		[ $(( $#PS1_STATIC + $#PWD )) -gt $(( $COLUMNS - 16 )) ]; then
 		if [ -n "$PS1_STATIC" ]; then
-			PS1+="($PS1_STATIC)"
+			PS1+="$PS1_STATIC"
 		fi
 	fi
 	RPS1="%F{cyan}%d%f"
