@@ -1,4 +1,4 @@
-function set_static(){
+set_static() {
 	PS1_STATIC=""
 	if [ "$EUID" = "0" ]; then
 		PS1_STATIC+="R"
@@ -8,7 +8,7 @@ function set_static(){
 	fi
 }
 
-function set_prompt(){
+set_prompt() {
 	PS1=$'%(?..%F{red}%?%f)'
 	if [ -n "$PS1_STATIC" ] || \
 		[ $(( $#PS1_STATIC + $#PWD )) -gt $(( $COLUMNS - 16 )) ]; then
@@ -67,11 +67,14 @@ tlvprompt_intr() {
 }
 
 tlvprompt_setup() {
+	for i in {1.."$(tput lines)"}; do
+		echo "~"
+	done
 	autoload -U add-zsh-hook
 	add-zsh-hook precmd tlvprompt_precmd
 	set_static
 	# call precmd or RPS wont appear in first prompt
-	tlvprompt_precmd
+	set_prompt
 
 	zle -N tlvprompt_ctrl_m
 	zle -N tlvprompt_ctrl_x
@@ -83,4 +86,11 @@ tlvprompt_setup() {
 	zle -N zle-keymap-select
 
 	local PS1_VISTATUS=""
+}
+
+TRAPWINCH() {
+	for i in {1.."$(tput lines)"}; do
+		echo "~"
+	done
+	zle reset-prompt
 }
