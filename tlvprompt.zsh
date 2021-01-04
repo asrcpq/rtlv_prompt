@@ -45,9 +45,13 @@ function set_prompt(){
 	PS1+="%f"
 }
 
-function zle-line-init zle-keymap-select {
+function zle-line-init {
 	set_prompt
 	zle reset-prompt
+	zle-keymap-select
+}
+
+function zle-keymap-select {
 	if [[ $TERM != 'linux' ]]; then
 		if [ "$KEYMAP" = "vicmd" ]; then
 			echo -ne '\e[1 q'
