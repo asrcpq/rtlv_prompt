@@ -28,6 +28,7 @@ function set_static(){
 }
 
 function set_prompt(){
+	local i
 	PS1=$'%(?..%1F%?<%f)'
 	PS1+=$PS1_STATIC
 	PS1+=":%6F%d%f"$'\n%k'
