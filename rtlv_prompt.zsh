@@ -64,14 +64,14 @@ function zle-keymap-select {
 	fi
 }
 
-tlvprompt_precmd() {
+rtlv_prompt_precmd() {
 	set_prompt
 	echo -ne '\e[5 q'
 }
 
-tlvprompt_setup() {
+rtlv_prompt_setup() {
 	autoload -U add-zsh-hook
-	add-zsh-hook precmd tlvprompt_precmd
+	add-zsh-hook precmd rtlv_prompt_precmd
 	set_static
 
 	zle -N zle-line-init

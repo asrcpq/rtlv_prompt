@@ -1,4 +1,4 @@
-source tlvprompt.zsh
+source rtlv_prompt.zsh
 test_static() {
 	for ((ii = 0; ii < 1024; ii++)); do
 		set_static
@@ -6,7 +6,7 @@ test_static() {
 }
 test_hook() {
 	for ((ii = 0; ii < 4096; ii++)); do
-		tlvprompt_precmd
+		rtlv_prompt_precmd
 	done
 }
 echo "set_static * 1024"
