@@ -40,10 +40,7 @@ function set_prompt(){
 	else
 		PS1+='%F{white}'
 	fi
-	for ((i=0;i<$SHLVL;i++)) {
-		PS1+='>'
-	}
-	PS1+="%f"
+	PS1+="${(l:$SHLVL::>:)}%f"
 }
 
 function zle-line-init {
