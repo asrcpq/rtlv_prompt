@@ -1,15 +1,15 @@
 source rtlv_prompt.zsh
 test_static() {
-	for ((ii = 0; ii < 1024; ii++)); do
+	for ((ii = 0; ii < 256; ii++)); do
 		set_static
 	done
 }
 test_hook() {
-	for ((ii = 0; ii < 4096; ii++)); do
+	for ((ii = 0; ii < 65536; ii++)); do
 		rtlv_prompt_precmd
 	done
 }
-echo "set_static * 1024"
+echo "set_static * 256"
 time (test_static)
-echo "(precmd) * 4096"
+echo "(precmd) * 65536"
 time (test_hook)
