@@ -9,7 +9,7 @@ function set_static(){
 	fi
 	PS1_STATIC+=$TTY_COLOR"%l%f&"
 	if [ -d /proc/$PPID ]; then
-		local SH_PARENT="$(ps -o comm= $PPID 2>/dev/null)"
+		local SH_PARENT="$(</proc/$PPID/comm)"
 	fi
 	case $SH_PARENT in
 		"xterm") local SH_COLOR="%F{cyan}";; # simple terminals
