@@ -2,7 +2,7 @@ function set_static(){
 	PS1_STATIC="%F{blue}%n%f@%F{cyan}%m%f#"
 	if [[ $TTY == /dev/pts/* ]]; then
 		local TTY_COLOR='%F{blue}'
-	elif [[ $TTY == /dev/tty/* ]]; then
+	elif [[ $TTY == /dev/tty* ]]; then
 		local TTY_COLOR='%F{green}'
 	else
 		local TTY_COLOR='%F{white}'
@@ -12,27 +12,21 @@ function set_static(){
 		local SH_PARENT="$(</proc/$PPID/comm)"
 	fi
 	case $SH_PARENT in
-		"xterm") local SH_COLOR="%F{cyan}";; # simple terminals
-		"st") local SH_COLOR="%F{cyan}";;
+		"xterm") local SH_COLOR="%F{cyan}";; # common
+		"foot") local SH_COLOR="%F{cyan}";;
 		"sshd") local SH_COLOR="%F{green}";; # remote
 		"mosh-server") local SH_COLOR="%F{green}";;
-		"screen") local SH_COLOR="%F{blue}";; # nested
+		"screen") local SH_COLOR="%F{blue}";; # detachable
 		"tmux") local SH_COLOR="%F{blue}";;
-		"sakura") local SH_COLOR='%F{magenta}';; # vte based
-		"termite") local SH_COLOR='%F{magenta}';;
-		"kitty") local SH_COLOR="%F{yellow}";; # GPU accelarated
-		"alacritty") local SH_COLOR="%F{yellow}";;
 		*) local SH_COLOR="%F{white}";; # others
 	esac
 	PS1_STATIC+=$SH_COLOR"$SH_PARENT%f"
 }
 
 function set_prompt(){
-	local i
 	PS1=$'%(?..%1F%?<%f)'
 	PS1+=$PS1_STATIC
 	PS1+=":%6F%d%f"$'\n%k'
-	PS1+=$PS1_VISTATUS
 	if [ -w $PWD ]; then
 		PS1+='%F{cyan}'
 	elif [ -x $PWD ]; then
@@ -73,6 +67,4 @@ rtlv_prompt_setup() {
 
 	zle -N zle-line-init
 	zle -N zle-keymap-select
-
-	local PS1_VISTATUS=""
 }
